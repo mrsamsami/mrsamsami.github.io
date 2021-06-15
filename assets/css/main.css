@@ -1935,6 +1935,17 @@ table.alt tbody tr td {
     background-color: #000415; }
   .publabel-accent5 {
     background-color: #4a505c; }
+	
+.experience .title{
+	font-size: 1.6em;
+	margin-bottom: 1em;
+}
+
+.experience + .experience .title{
+		border-top-color: #9692b6;
+		border-top-width: 1px;
+		border-top-style: dashed;
+	}
 
 /* Header */
 #header {
