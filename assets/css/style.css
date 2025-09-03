@@ -1226,6 +1226,79 @@ footer {
   justify-content: center;
 }
 
+/* ------------------------------------------------------------------------
+   Mobile‑friendly enhancements
+
+   The original design looked great on large screens but several elements
+   caused horizontal overflow on phones.  To make the layout fluid and
+   remove the mysterious white space, we apply a few targeted fixes:
+
+   - Allow flex children in the hero section to shrink below their
+     intrinsic min-content size with `min-width: 0`.  Without this,
+     long headings or paragraphs force the container to expand and
+     create sideways scrolling.
+   - Scale typography with `clamp()` so large headings gracefully
+     reduce in size on smaller devices.
+   - Improve line wrapping with `text-wrap: balance` (where supported),
+     `overflow-wrap` and `hyphens` to prevent text from disappearing
+     under background images or overflowing its container.
+   - On narrow viewports remove the decorative horizontal rules in the
+     navigation bar and allow the nav links to wrap onto multiple
+     rows.  This prevents the nav from pushing the page width wider
+     than the viewport.
+*/
+.hero .intro,
+.hero .photo {
+  /* Let flex items shrink to fit small screens */
+  min-width: 0;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  /* Encourage balanced line breaks for long names */
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.hero h2 {
+  font-size: clamp(1rem, 3.5vw, 1.15rem);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.hero p {
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+@media (max-width: 768px) {
+  /* Stack nav items and hide long horizontal rules on small screens */
+  nav .nav-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  nav .nav-container > ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    border: none;
+  }
+  nav .nav-container > ul::before,
+  nav .nav-container > ul::after {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   .hero .container {
     flex-direction: column;
