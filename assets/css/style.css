@@ -1,0 +1,1246 @@
+/* Import Cinzel for names and headings.  The remainder of the typography will
+   fall back to a classic serif stack specified on the body element.  Since
+   the user requested the et‑book/Palatino stack for most content, we no
+   longer import Inter here. */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&display=swap');
+
+/*
+  Bring in Neuton, a Dutch‑inspired serif with a large x‑height that remains
+  legible at small sizes.  Designed by Brian Zick, Neuton has a classic
+  feel reminiscent of Newton’s notes, yet it is modern and readable【465529294285987†L10-L16】.
+  This typeface will be used exclusively for the tooltips in the research
+  perspective section to subtly reference historical scholarship without
+  overwhelming the rest of the page’s typography.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Neuton:wght@400;600&display=swap');
+/* Import Cormorant Garamond – a Renaissance‑inspired serif with high contrast and 
+   refined curves.  This graceful typeface echoes classic European printing while 
+   remaining highly readable at smaller sizes【549334962080354†L35-L66】.  We will use it for
+   publication descriptions to lend a scholarly yet modern feel. */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap');
+
+/*
+  Import Cormorant Garamond, a Renaissance-inspired typeface with refined serifs
+  and high contrast strokes that express timeless sophistication【131612350051637†L201-L221】.  Its
+  elegant heritage pairs classic Garamond proportions with modern display
+  qualities, making it perfect for evocative yet readable descriptions.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap');
+
+/*
+  Minimal, elegant and professional style inspired by Lightcone Infrastructure’s
+  design language.  The palette is restrained, using a light background
+  combined with muted accent colours and generous spacing.  Headings are set
+  in a classic serif font to evoke sophistication, while body text uses a
+  clean sans‑serif for readability.
+*/
+
+:root {
+  /* Colour palette: minimal with a deep almost‑black blue accent that reads
+     as powerful and tech‑oriented.  The background is kept bright to
+     support a sense of spaciousness. */
+  --bg: #f9f9fa;              /* very light grey to soften the contrast */
+  /* Accent colours for the light theme.  Use a calm indigo that still
+     contrasts well with text but feels more tranquil. */
+  --primary: #283a80;         /* calm navy‑indigo for accents */
+  --primary-hover: #1e2f63;   /* slightly darker for hover states */
+  --container-bg: #ffffff;    /* clean white for embedded cards */
+  --container-border: #e2e5eb;/* soft border colour to blend with background */
+  --text-primary: #1a1a1a;    /* near‑black primary text for maximum legibility */
+  --text-secondary: #5e5e5e;  /* muted secondary text */
+  --rp-accent: #5968c4;           /* primary accent for links: gentler periwinkle */
+  --rp-ink:    #0f172a;           /* base text color (light mode) */
+  --rp-ink-d:  #e5e7eb;           /* base text color (dark mode) */
+  /*
+    The colours above define the light colour palette.  A complementary
+    dark palette is defined further down in the file under `.dark-mode`.
+  */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* Use the requested serif stack for all text except names/headings.  This
+     stack includes et-book and various Palatino variants with sensible
+     fallbacks. */
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  /* Always derive the page background from the theme variables.  This
+     property is explicitly set here so that the dark mode toggle can
+     override it via CSS variables. */
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   Cross‑page fade transitions
+
+   These rules ensure that pages gently fade in on load and fade out before
+   navigation.  The default state sets the body fully transparent; JavaScript
+   then adds the `fade-in` class on DOMContentLoaded to bring it into view.
+   When a link is clicked the script swaps `fade-in` for `fade-out`,
+   triggering a quick fade to transparent before the browser navigates
+   away. */
+body {
+  opacity: 0;
+}
+body.fade-in {
+  opacity: 1;
+  transition: opacity 0.35s ease-in;
+}
+body.fade-out {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: color 0.3s;
+}
+a:hover {
+  color: var(--primary);
+}
+
+/* Navigation bar */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  /* box-shadow: 0 2px 8px rgba(0,0,0,0.04); */
+}
+nav .nav-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+nav .brand {
+  font-family: 'Cinzel', serif;
+  font-weight: 500;
+  font-size: 1.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1rem;
+}
+nav li {
+  font-weight: 500;
+}
+nav a {
+  color: var(--text-primary);
+  transition: color 0.3s;
+}
+nav a.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Add subtle underline animation on nav links when hovered or active */
+nav a {
+  position: relative;
+  padding-bottom: 4px;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Theme toggle button
+
+   The theme toggle is implemented as a small circular button that lives
+   alongside the navigation links.  In light mode the circle is outlined
+   with rays radiating from it.  In dark mode the rays disappear and the
+   circle becomes solid.  The button itself is unstyled (no background
+   or border) and simply hosts the icon.  Use the `light` or `dark`
+   classes on the button (controlled via JavaScript) to switch between
+   appearances.  Feel free to tweak the dimensions if you adjust the
+   navigation bar spacing.
+*/
+nav .nav-container > ul > li > .theme-toggle {
+  /* Remove default button styling */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+nav .nav-container > ul > li > .theme-toggle .icon {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+/* Light mode icon: outline with rays. */
+nav .nav-container > ul > li > .theme-toggle.light .icon {
+  border: 2px solid var(--primary);
+  background: transparent;
+}
+nav .nav-container > ul > li > .theme-toggle.light .icon::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  /* Use multiple box shadows to simulate rays around the circle.  The
+     offsets correspond to the eight compass directions. */
+  box-shadow:
+    0 -0.6rem 0 0 var(--primary),
+    0 0.6rem 0 0 var(--primary),
+    -0.6rem 0 0 0 var(--primary),
+    0.6rem 0 0 0 var(--primary),
+    0.42rem 0.42rem 0 0 var(--primary),
+    -0.42rem 0.42rem 0 0 var(--primary),
+    0.42rem -0.42rem 0 0 var(--primary),
+    -0.42rem -0.42rem 0 0 var(--primary);
+}
+
+/* Dark mode icon: remove rays and fill circle. */
+nav .nav-container > ul > li > .theme-toggle.dark .icon {
+  /* Use a white-ish fill for the solid circle in dark mode.  The border
+     colour stays consistent with the primary accent. */
+  border: 2px solid var(--primary);
+  background: #ffffff;
+}
+nav .nav-container > ul > li > .theme-toggle.dark .icon::before {
+  /* In dark mode there are no rays, so ensure the pseudo element
+     contributes nothing. */
+  content: none;
+}
+
+/* Nav border lines inspired by Helios
+   Center the nav list and add extending horizontal lines on both sides
+   of the list with border accents. The list itself gets left and right
+   borders to anchor the lines. */
+nav .nav-container > ul {
+  position: relative;
+  display: inline-flex;
+  gap: 2rem;
+  padding: 0.6rem 2rem;
+  margin: 0;
+  list-style: none;
+  border-left: 1px solid var(--container-border);
+  border-right: 1px solid var(--container-border);
+}
+nav .nav-container > ul::before,
+nav .nav-container > ul::after {
+  content: '';
+  display: block;
+  width: 300%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 1px;
+  background-color: var(--container-border);
+}
+nav .nav-container > ul::before {
+  left: 100%;
+}
+nav .nav-container > ul::after {
+  right: 100%;
+}
+nav .nav-container > ul > li {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  /* Remove default gap margins and align items centrally */
+}
+
+/* Hero section */
+.hero {
+  padding-top: 100px; /* offset for fixed nav */
+  padding-bottom: 80px;
+}
+.hero .container {
+  max-width: 1100px;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: wrap;
+  /* Card styling integrated into the background: use a white canvas with a
+     softer border and reduced shadow.  The left accent bar is slimmer to
+     avoid dominating the layout. */
+  /* background: var(--container-bg); */
+  /* border: 1px solid var(--container-border); */
+  /* border-left: 3px solid var(--primary); */
+  /* Remove bottom border to allow the decorative chevron shape to blend seamlessly */
+  /* border-bottom: none; */
+  border-radius: 15px;
+  /* Balanced padding; bottom padding will be supplemented by the social icons outside the container */
+  padding: 3rem 3rem 0rem 2.2rem;
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); */
+  /* margin-bottom: 3.5rem; */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  /* Allow pseudo‑elements to overlay the container for decorative shapes */
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Subtle hover effect on the hero container: lift slightly with a bit more shadow */
+.hero .container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.03);
+}
+.hero .intro {
+  flex: 1 1 500px;
+}
+.hero h1 {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 3.2rem;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+.hero h2 {
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 1.3rem;
+  color: var(--text-secondary);
+}
+.hero p {
+  font-size: 1rem;
+  max-width: 620px;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+.hero .buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.button {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+/* Colour the icon inside buttons: by default use the accent colour */
+.button i {
+  margin-right: 0.5rem;
+  font-size: 1.05rem;
+  line-height: 1;
+  vertical-align: middle;
+  color: var(--primary);
+}
+
+/* In primary buttons (dark background), invert icon colour */
+.button.primary i {
+  color: var(--bg);
+}
+.button:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+  transform: translateY(-2px);
+}
+.button.primary {
+  background-color: var(--primary);
+  color: var(--bg);
+  border: none;
+}
+.button.primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+.hero .photo {
+  flex: 0 1 350px;
+  display: flex;
+  justify-content: center;
+  order: -1; /* place the photo before the intro on larger screens */
+  margin-bottom: 1.5rem;
+  /* Establish a positioning context for decorative pseudo-elements such as
+     the halo behind the portrait. */
+  position: relative;
+}
+.hero .photo img {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid var(--primary);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Add a soft halo behind the portrait to give depth to the hero section.
+   This radial gradient gently echoes the primary colour and draws the
+   viewer's attention without overwhelming the rest of the design. */
+.hero .photo::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at center, color-mix(in oklab, var(--primary) 35%, transparent) 0%, transparent 70%);
+  filter: blur(45px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* On hover, the portrait gently scales and gains saturation */
+.hero .photo img:hover {
+  transform: scale(1.03);
+  filter: saturate(1.15);
+}
+
+/* Sections */
+section {
+  max-width: 900px;
+  width: 90%;
+  margin: auto;
+  padding: 100px 0;
+  scroll-margin-top: 120px;
+}
+
+/* Card styling for about and publications */
+#about,
+#publications,
+#blog {
+  /* background: var(--container-bg); */
+  border: 1px solid var(--container-border);
+  /* border-left: 3px solid var(--primary); */
+  border-radius: 8px;
+  padding: 2.5rem 2.5rem 2.5rem 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.025);
+  margin-bottom: 3.5rem;
+}
+
+/* Research perspective list styling: elegant numbered paragraphs */
+.perspective-list {
+  margin: 0;
+  /* margin-top: 1em; */
+  padding: 0;
+  padding-top: 1em;
+  list-style: none;
+  counter-reset: item;
+  overflow: visible;
+}
+.perspective-list li {
+  counter-increment: item;
+  position: relative;
+  padding-left: 2.7rem;
+  margin-bottom: 1.8rem;
+  font-size: 1.1rem;
+  /* Use the theme's secondary text colour for list body copy to
+     harmonise with the rest of the page.  This automatically
+     adjusts when dark mode is toggled. */
+  color: var(--text-secondary);
+  line-height: 1.8;
+  /* font-family: "Benne"; */
+}
+.perspective-list li::before {
+  content: counter(item) '.';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1.2;
+}
+.perspective-list li:last-child {
+  margin-bottom: 0;
+}
+
+.perspective-list a,
+.intro a{
+  --link: var(--rp-accent);
+  --ink:  var(--rp-ink);
+  /* Harmonise link colour with the accent variable.  The hue is
+     defined in the CSS variables above. */
+  color: var(--rp-accent);
+  text-decoration: none;
+  text-underline-offset: .18em;           /* graceful fallback if bg underline fails */
+  position: relative;
+  padding-bottom: .06rem;
+
+  /* Elegant animated underline (background trick = crisp + animatable) */
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--link) 75%, white),
+      color-mix(in oklab, var(--link) 95%, black)
+    );
+  background-size: 0 2px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+
+  transition:
+    color .28s ease,
+    background-size .36s cubic-bezier(.2,.9,.2,1),
+    filter .28s ease,
+    text-shadow .28s ease;
+}
+
+.perspective-list a:hover,
+.perspective-list a:focus-visible,
+.intro a:hover,
+.intro a:focus-visible{
+  color: #747fd3;
+  background-size: 100% 2px;
+  filter: saturate(1.08);
+  text-shadow: 0 0 .01px currentColor; /* subpixel crispness */
+  outline: none;
+}
+
+/* Active/current page link: keep underline visible */
+.perspective-list a[aria-current],
+.perspective-list a.active,
+.intro a[aria-current],
+.intro a.active{
+  color: var(--link);
+  background-size: 100% 2px;
+}
+
+/* Dark mode tuning */
+@media (prefers-color-scheme: dark){
+  .perspective-list a,
+  .intro a{
+    --ink: var(--rp-ink-d);
+    color: color-mix(in oklab, var(--link) 88%, var(--ink));
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--link) 85%, black),
+        color-mix(in oklab, var(--link) 70%, white)
+      );
+  }
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce){
+  .perspective-list a,
+  .intro a,
+  .perspective-list a::after,
+  .intro a::after{
+    transition: none;
+  }
+}
+
+/*
+   ---------------------------------------------------------------------------
+   Dark mode palette
+
+   When the body element has the `dark-mode` class applied, these CSS
+   variables override the defaults defined in `:root`.  Only variables that
+   differ between light and dark themes are defined here.  Feel free to
+   experiment with these values to achieve the desired contrast.  The
+   remainder of the layout automatically adjusts because the bulk of the
+   colour choices in this stylesheet are expressed using variables.
+*/
+body.dark-mode {
+  --bg:            #0d1b2a;         /* slightly lighter navy for a calmer feel */
+  --primary:       #6b79b8;         /* muted indigo accent */
+  --primary-hover: #5a699c;         /* darker shade for hover */
+  --container-bg:  #16223a;         /* card backgrounds */
+  --container-border: #2a3d5e;      /* soft border colour */
+  --text-primary:  #c8d1e7;         /* main text colour */
+  --text-secondary:#788bb0;         /* secondary text */
+  --rp-accent:     #5968c4;         /* match light theme link colour for consistency */
+  --rp-ink:        #dfe5f0;         /* base ink colour */
+  --rp-ink-d:      #0f172a;         /* dark ink for light text on tooltips */
+}
+
+/* Dark mode specific structural overrides */
+body.dark-mode nav {
+  background: rgba(10, 25, 47, 0.9);
+}
+
+/* ---------------------------------------------------------------------------
+   Blog page styling
+
+   The blog page shares the same colour palette and typography as the rest of
+   the site but introduces a more structured layout for long‑form content.  It
+   remains hidden until a reader selects a blog post.  When active it
+   overlays the existing sections, leaving the navigation bar and footer in
+   place.  Smooth transitions are handled via the `.hidden-section` and
+   `.blog-page.active` classes defined below. */
+
+/* Generic transition for sections so they fade up/down when toggled.  Each
+   section will receive this by default; the `.hidden-section` class
+   overrides opacity and transform. */
+section {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Hide sections when the blog page is active.  A slight downward
+   translation adds motion to the fade for a more polished feel.  Pointer
+   events are disabled so underlying links do not interfere. */
+.hidden-section {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  display: none;
+}
+
+/* Base styling for the blog page.  It starts hidden with zero opacity and
+   slight translation.  When the `.active` modifier is applied via
+   JavaScript the section fades into place and becomes interactive. */
+.blog-page {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  display: none;
+}
+.blog-page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* Container for the blog layout.  It constrains the width of the
+   article and positions the table of contents alongside it. */
+.blog-container {
+  /* Provide more breathing room for the article and push the table of
+     contents further toward the page edge. */
+  max-width: 1200px;
+  width: 94%;
+  margin: 0 auto;
+  padding: 3rem 1rem 4rem 1rem;
+  display: flex;
+  gap: 2.5rem;
+  position: relative;
+}
+
+/* Article content area.  Constrain width to improve readability on large
+   screens and centre it within its flex cell. */
+.blog-content {
+  flex: 1 1 auto;
+  /* Allow a wider article body while still constraining maximum line
+     length for readability. */
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* Hero image within the blog.  Maintain aspect ratio and allow a subtle
+   border radius.  We slightly increase brightness to ensure dark
+   illustrations remain visible in both light and dark modes. */
+.blog-hero {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  /* adjust brightness/contrast so dark header images still read clearly */
+  filter: brightness(1.25) contrast(1.05);
+}
+
+/* Typography for the blog.  Use larger headings and generous spacing. */
+.blog-content h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: var(--text-primary);
+}
+.blog-content h2 {
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 1.55rem;
+  margin-top: 2.2rem;
+  margin-bottom: 0.6rem;
+  color: var(--text-primary);
+}
+.blog-content h3 {
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 1.3rem;
+  margin-top: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+.blog-content p {
+  margin-bottom: 1.1rem;
+  font-size: 1.02rem;
+  text-align: justify;
+  color: var(--text-secondary);
+}
+.blog-content blockquote {
+  margin: 1.6rem 0;
+  padding-left: 1rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Table of contents sidebar.  It uses sticky positioning to remain in
+   view as the reader scrolls. */
+.toc {
+  /* Position the table of contents flush to the left edge and slightly
+     narrower than before. */
+  flex: 0 0 190px;
+  position: sticky;
+  top: 130px;
+  align-self: flex-start;
+  border-left: 1px solid var(--container-border);
+  padding-left: 1rem;
+  margin-left: 0;
+}
+.toc h3 {
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.toc ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+.toc li {
+  margin-bottom: 0.45rem;
+}
+.toc a {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.toc a:hover {
+  color: var(--primary);
+}
+.toc a.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Reading progress indicator at the very top of the viewport. */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  z-index: 8;
+}
+.reading-progress-bar {
+  height: 100%;
+  width: 0;
+  background-color: var(--primary);
+  transition: width 0.2s ease-out;
+}
+
+/* Back button styling.  Fixed just below the nav bar to the left. */
+.back-button {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 11;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  background-color: var(--container-bg);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.back-button:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+
+/* In dedicated blog pages the back control is part of the sidebar.  The
+   `.back-icon` is a circular button that sits atop the table of
+   contents and scrolls with it. */
+.toc .back-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
+  color: var(--primary);
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 0.8rem;
+}
+.toc .back-icon:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+
+/* Responsive adjustments for smaller screens: stack the TOC below the
+   article and remove the sticky behaviour. */
+@media (max-width: 800px) {
+  .blog-container {
+    flex-direction: column;
+  }
+  .toc {
+    order: -1;
+    position: relative;
+    top: auto;
+    border-left: none;
+    border-top: 1px solid var(--container-border);
+    padding-top: 1rem;
+    margin-bottom: 2rem;
+  }
+  .back-button {
+    top: 72px;
+    left: 15px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+body.dark-mode .publication-card:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+body.dark-mode .contact-icons a {
+  background-color: var(--container-bg);
+  border-color: var(--container-border);
+  color: var(--primary);
+}
+body.dark-mode .contact-icons a:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+}
+
+.perspective-list a[data-tip]{
+  position: relative;
+  display: inline-block;
+}
+
+.perspective-list a[data-tip]::before {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  top: calc(100% + 2px);
+
+  /* sizing */
+  width: max-content;
+  min-width: 18ch;
+  max-width: 44ch;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+
+  /* layout & look */
+  padding: .6rem .8rem;
+  border-radius: 10px;
+  /* Fancy yet elegant tooltip design.  Use a rich gradient drawn from
+     indigo blues to provide depth and completely opaque coverage so
+     underlying text never shows through.  The border picks up the
+     accent colour defined in the palette, and a subtle drop shadow
+     adds separation from surrounding content. */
+  background: linear-gradient(145deg, #1e253b 0%, #283b60 100%);
+  color: #f9fafe;
+  border: 1px solid var(--rp-accent);
+  box-shadow: 0 10px 20px -6px rgba(0, 0, 0, 0.5);
+
+  /* Use Neuton for the tooltip body with a slightly smaller size to
+     evoke historic notes.  The generous line height improves
+     readability at smaller sizes. */
+  font-family: 'Neuton', et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+
+  /* text smoothing */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* animation */
+  opacity: 0;
+  transform: translateY(4px) scale(0.98);
+  transition: opacity 0.22s ease-out, transform 0.24s ease-out;
+  will-change: opacity, transform;
+
+  pointer-events: none; /* so tooltip doesn't steal hover */
+}
+
+/* Draw a small triangular pointer beneath the tooltip to visually link the
+   bubble to the referenced text.  The arrow inherits the same colour as
+   the tooltip background. */
+.perspective-list a[data-tip]::after {
+  content: '';
+  position: absolute;
+  z-index: 29;
+  left: 1.2rem;
+  top: calc(100% + 2px);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  /* Match the arrow colour to the darkest edge of the tooltip gradient */
+  border-top: 6px solid #1e253b;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s ease-out, transform 0.24s ease-out;
+  pointer-events: none;
+}
+
+.perspective-list a[data-tip]:hover::after,
+.perspective-list a[data-tip]:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Adjust the arrow colour in dark mode to match the darker tooltip. */
+@media (prefers-color-scheme: dark) {
+  .perspective-list a[data-tip]::after {
+    /* Use a solid tone drawn from the dark gradient rather than a translucent one. */
+    border-top-color: #16213a;
+  }
+}
+
+/* When dark mode is activated via the toggle, match the arrow colour to the
+   darker tooltip background manually. */
+body.dark-mode .perspective-list a[data-tip]::after {
+  /* Solid arrow colour for dark mode when toggled manually. */
+  border-top-color: #16213a;
+}
+
+/* When dark mode is activated via the toggle, also adjust the tooltip
+   backdrop and text colour to match the calmer dark palette defined
+   above. */
+body.dark-mode .perspective-list a[data-tip]::before {
+  /* Dark mode tooltip uses a deep gradient to fully cover underlying text,
+     with a subtle indigo highlight.  Text is light for contrast and the
+     same Neuton font and sizing are reused here. */
+  background: linear-gradient(145deg, #16213a 0%, #1e2f49 100%);
+  color: #e8edf8;
+  font-family: 'Neuton', et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+/* Show on hover + keyboard focus */
+.perspective-list a[data-tip]:hover::before,
+  .perspective-list a[data-tip]:focus-visible::before {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Dark mode polish */
+@media (prefers-color-scheme: dark) {
+  .perspective-list a[data-tip]::before {
+    /* Dark theme tooltip background: use the same gradient as manual dark mode
+       for consistency and full opacity.  Light ink for contrast. */
+    background: linear-gradient(145deg, #16213a 0%, #1e2f49 100%);
+    color: #e8edf8;
+    font-family: 'Neuton', et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .perspective-list a[data-tip]::before {
+    transition: none;
+  }
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+/* Add a slender accent bar to the left of section titles to subtly guide
+   the eye.  The bar picks up the primary accent colour in both themes. */
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  width: 4px;
+  height: 80%;
+  background-color: var(--primary);
+  border-radius: 2px;
+}
+#about p {
+  font-size: 1.02rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+  line-height: 1.8;
+}
+
+/* Publications */
+.publication-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.publication-card {
+  padding: 1rem 0 1rem 1.2rem;
+  border: 1px solid #e7e7e7;
+  /* Highlight the left edge with a thicker accent line to subtly
+     anchor each entry.  This replaces the commented border-left. */
+  border-left: 4px solid var(--primary);
+  border-radius: 5px;
+  /* Animate cards sliding into view on scroll.  Cards start slightly
+     lower and transparent; when the 'revealed' class is added they fade
+     up into place. */
+  opacity: 0;
+  /* transform: translateY(16px); */
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease,
+              opacity 0.6s ease-out;
+}
+/* .publication-card:last-child {
+  border-bottom: none;
+} */
+.publication-card h3 {
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  color: var(--text-primary);
+}
+.publication-card .authors {
+  font-family: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  padding-right: 2rem;
+}
+.publication-card .label {
+  font-size: 0.7rem;
+  background-color: var(--primary);
+  color: var(--bg);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  display: inline-block;
+  font-family: monospace;
+}
+
+/* Publication year styling: A small uppercase pill that provides the year
+   in a subtle yet visible manner.  The pill uses the primary accent colour
+   reversed on the background to distinguish it from the label. */
+.publication-card .pub-year {
+  /* Keep the year unobtrusive yet clearly separated.  Use a small pill
+     shape with a thin border and subtle spacing. */
+  margin-top: 0.4rem;
+  /* Provide space on the right so the year doesn't crowd the label. */
+  margin-right: 0.5rem;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background-color: var(--container-bg);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+/* Dark mode variant: invert colours for contrast. */
+body.dark-mode .publication-card .pub-year {
+  background-color: var(--primary);
+  color: var(--bg);
+  border-color: var(--primary);
+}
+
+/* Elegant description style for each publication.  The description
+   paragraph sits below the authors/label, using a slightly smaller
+   type size and italic styling to differentiate it from the title and
+   author line.  The colour draws from the secondary text tone so
+   that it complements both light and dark themes. */
+.publication-card .pub-description {
+  margin-top: 0.4rem;
+  /* Use Cormorant Garamond to evoke classical refinement without resorting to
+     italics.  The slightly larger size improves legibility. */
+  font-family: 'Cormorant Garamond', et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  /* font-size: 0.98rem; */
+  font-weight: 500;
+  text-align: justify;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  padding-right: 2rem;
+}
+
+/* Ensure publication descriptions remain legible in dark mode by
+   reusing the secondary text colour defined for dark mode. */
+body.dark-mode .publication-card .pub-description {
+  color: var(--text-secondary);
+}
+
+/* Hover effect on publication cards: slight lift and light background */
+.publication-card:hover {
+  background-color: #eef2f7;
+  /* Move the card slightly up and to the right on hover for a playful yet
+     professional feel.  This restores the subtle movement effect the
+     user liked. */
+  transform: translate(2.2px, -1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+/* When a card becomes visible (via IntersectionObserver), restore full
+   opacity and position. */
+.publication-card.revealed {
+  opacity: 1;
+  /* transform: none; */
+}
+
+/* Footer */
+footer {
+  position: relative;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  /* Remove the previous top border; lines will be drawn via pseudo elements */
+}
+
+/* Wrap the footer text to add borders and extended lines */
+.footer-content {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border-left: 1px solid var(--container-border);
+  border-right: 1px solid var(--container-border);
+}
+
+.footer-content::before,
+.footer-content::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 1px;
+  background-color: var(--container-border);
+  /* Use a large width to extend beyond the content area */
+  width: 300%;
+}
+
+.footer-content::before {
+  left: 100%;
+}
+
+.footer-content::after {
+  right: 100%;
+}
+
+
+/* Contact icons row: unify CV, email and social links into a single, elegant set of circular buttons */
+.contact-icons {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.contact-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--container-border);
+  background-color: var(--container-bg);
+  color: var(--primary);
+  font-size: 1.25rem;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.contact-icons a:hover {
+  background-color: var(--primary);
+  color: var(--bg);
+  transform: translateY(-3px);
+}
+
+/* Call-to-action container below hero card */
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+  /* margin-top: 2.5rem; */
+  margin-bottom: 3rem;
+}
+
+/* Buttons inside the call-to-action area */
+.cta .buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .hero .container {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+  .hero .photo {
+    margin-top: 2rem;
+  }
+  nav .nav-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  nav ul {
+    gap: 1rem;
+  }
+}
