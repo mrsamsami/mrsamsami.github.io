@@ -1227,21 +1227,18 @@ footer {
 }
 
 /* ------------------------------------------------------------------------
-   Mobile‑friendly enhancements
+   Mobile‑friendly enhancements (2025-09-03)
 
    The original design looked great on large screens but several elements
    caused horizontal overflow on phones.  To make the layout fluid and
-   remove the mysterious white space, we apply a few targeted fixes:
+   remove mysterious white space, we apply a few targeted fixes:
 
    - Allow flex children in the hero section to shrink below their
-     intrinsic min-content size with `min-width: 0`.  Without this,
-     long headings or paragraphs force the container to expand and
-     create sideways scrolling.
+     intrinsic min-content size with `min-width: 0`.
    - Scale typography with `clamp()` so large headings gracefully
      reduce in size on smaller devices.
    - Improve line wrapping with `text-wrap: balance` (where supported),
-     `overflow-wrap` and `hyphens` to prevent text from disappearing
-     under background images or overflowing its container.
+     `overflow-wrap` and `hyphens` to prevent text from overflowing.
    - On narrow viewports remove the decorative horizontal rules in the
      navigation bar and allow the nav links to wrap onto multiple
      rows.  This prevents the nav from pushing the page width wider
@@ -1255,7 +1252,6 @@ footer {
 
 .hero h1 {
   font-size: clamp(2rem, 6vw, 3.2rem);
-  /* Encourage balanced line breaks for long names */
   text-wrap: balance;
   overflow-wrap: anywhere;
   hyphens: auto;
@@ -1280,22 +1276,40 @@ footer {
   hyphens: auto;
 }
 
-@media (max-width: 768px) {
-  /* Stack nav items and hide long horizontal rules on small screens */
-  nav .nav-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.6rem;
+@media (max-width: 900px) {
+  /* Prevent nav from creating horizontal scroll */
+  nav {
+    overflow-x: clip;
   }
+  /* Let the nav list wrap and remove long pseudo-lines */
   nav .nav-container > ul {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
-    border: none;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-left: 0;
+    border-right: 0;
+    max-width: 100%;
+    overflow: clip;
   }
   nav .nav-container > ul::before,
   nav .nav-container > ul::after {
-    display: none;
+    content: none !important;
+    display: none !important;
+    width: 0 !important;
+  }
+}
+
+/* Safety: prevent any stray element from forcing horizontal scrolling */
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+@supports not (overflow-x: clip) {
+  html,
+  body {
+    overflow-x: hidden;
   }
 }
 
